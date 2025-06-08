@@ -49,27 +49,6 @@ class HomeScreenState extends State<HomeScreen> {
                 ),
                 SliverList(
                   delegate: SliverChildListDelegate([
-                    Padding(
-                      padding: const EdgeInsets.all(20),
-                      child: MovieImageTextRow(
-                        imageUrl: nowPlayingMovies[0]["poster"]!,
-                        title: nowPlayingMovies[0]["title"]!,
-                      ),
-                    ),
-                    const Padding(
-                      padding: EdgeInsets.symmetric(
-                        horizontal: 20,
-                        vertical: 10,
-                      ),
-                      child: Text(
-                        "Trending Movies 🔥",
-                        style: TextStyle(
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
                     ...trendingMovies.map(
                       (movie) => Padding(
                         padding: const EdgeInsets.all(12.0),
