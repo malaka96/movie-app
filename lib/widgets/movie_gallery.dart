@@ -3,8 +3,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
 class MovieGallery extends StatelessWidget {
-  final List<Map<String, String>>
-  movies; // ✅ List containing title, description, and poster URL
+  final List<Map<String, String>> movies;
 
   const MovieGallery({required this.movies, super.key});
 
@@ -12,18 +11,17 @@ class MovieGallery extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       width: MediaQuery.of(context).size.width,
-      height: MediaQuery.of(context).size.height, // ✅ Full-screen height
+      height: MediaQuery.of(context).size.height,
       child: CarouselSlider(
         options: CarouselOptions(
           height: MediaQuery.of(context).size.height,
           autoPlay: true,
-          viewportFraction: 1.0, // ✅ Each image takes full screen width
+          viewportFraction: 1.0,
         ),
         items: movies.map((movie) {
           return Stack(
             children: [
               SizedBox(
-                // ✅ Ensures proper image rendering
                 width: MediaQuery.of(context).size.width,
                 height: MediaQuery.of(context).size.height,
                 child: CachedNetworkImage(
@@ -36,7 +34,6 @@ class MovieGallery extends StatelessWidget {
                 ),
               ),
               Positioned.fill(
-                // ✅ Prevents overlay from blocking the image
                 child: Container(color: Colors.black.withValues(alpha: 0.5)),
               ),
               Positioned(
