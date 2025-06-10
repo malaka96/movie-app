@@ -24,48 +24,45 @@ class HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: FutureBuilder<List<dynamic>>(
-        future: movieData,
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
-          } else if (snapshot.hasError) {
-            return const Center(child: Text("Error loading movies"));
-          } else {
-            final nowPlayingMovies =
-                snapshot.data![0] as List<Map<String, String>>;
-            final trendingMovies =
-                snapshot.data![1] as List<Map<String, String>>;
+    return FutureBuilder<List<dynamic>>(
+      future: movieData,
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(child: CircularProgressIndicator());
+        } else if (snapshot.hasError) {
+          return const Center(child: Text("Error loading movies"));
+        } else {
+          final nowPlayingMovies =
+              snapshot.data![0] as List<Map<String, String>>;
+          final trendingMovies = snapshot.data![1] as List<Map<String, String>>;
 
-            return CustomScrollView(
-              slivers: [
-                SliverAppBar(
-                  expandedHeight: MediaQuery.of(context).size.height,
-                  pinned: true,
-                  flexibleSpace: FlexibleSpaceBar(
-                    background: MovieGallery(movies: nowPlayingMovies),
-                  ),
+          return CustomScrollView(
+            slivers: [
+              SliverAppBar(
+                expandedHeight: MediaQuery.of(context).size.height,
+                pinned: true,
+                flexibleSpace: FlexibleSpaceBar(
+                  background: MovieGallery(movies: nowPlayingMovies),
                 ),
-                SliverList(
-                  delegate: SliverChildListDelegate([
-                    ...trendingMovies.map(
-                      (movie) => Padding(
-                        padding: const EdgeInsets.all(12.0),
-                        child: MovieImageTextRow(
-                          imageUrl: movie["poster"]!,
-                          title: movie["title"]!,
-                          //description: movie["description"]!,
-                        ),
+              ),
+              SliverList(
+                delegate: SliverChildListDelegate([
+                  ...trendingMovies.map(
+                    (movie) => Padding(
+                      padding: const EdgeInsets.all(12.0),
+                      child: MovieImageTextRow(
+                        imageUrl: movie["poster"]!,
+                        title: movie["title"]!,
+                        //description: movie["description"]!,
                       ),
                     ),
-                  ]),
-                ),
-              ],
-            );
-          }
-        },
-      ),
+                  ),
+                ]),
+              ),
+            ],
+          );
+        }
+      },
     );
   }
 }
