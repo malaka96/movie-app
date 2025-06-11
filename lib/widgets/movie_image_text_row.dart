@@ -13,47 +13,51 @@ class MovieImageTextRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        SizedBox(
-          width: MediaQuery.of(context).size.width * 0.4, //40% of screen width
-          height:
-              (MediaQuery.of(context).size.width * 0.4) *
-              (9 / 16), // 16:9 aspect ratio
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(10), // Rounded corners
-            child: Image.network(
-              imageUrl,
-              fit: BoxFit.cover, //Ensure image covers the area
+    return SizedBox(
+      //width: MediaQuery.of(context).size.width * 0.8, //40% of screen width
+      //height: (MediaQuery.of(context).size.width * 0.2),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          SizedBox(
+            width: 180, //40% of screen width
+            height: 100, // 16:9 aspect ratio
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(10), // Rounded corners
+              child: Image.network(
+                imageUrl,
+                fit: BoxFit.cover, //Ensure image covers the area
+              ),
             ),
           ),
-        ),
-        const SizedBox(width: 16), // Spacing between image & text
-        Expanded(
-          //Ensures text fills remaining space
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                title,
-                style: const TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
+          const SizedBox(width: 10), // Spacing between image & text
+          Expanded(
+            //Ensures text fills remaining space
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  title,
+                  style: const TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 2,
                 ),
-              ),
-              // const SizedBox(height: 8),
-              // Text(
-              //   description,
-              //   style: const TextStyle(fontSize: 16, color: Colors.white),
-              //   maxLines: 3, //Prevents overflow
-              //   overflow: TextOverflow.ellipsis,
-              // ),
-            ],
+                // const SizedBox(height: 8),
+                // Text(
+                //   description,
+                //   style: const TextStyle(fontSize: 16, color: Colors.white),
+                //   maxLines: 3, //Prevents overflow
+                //   overflow: TextOverflow.ellipsis,
+                // ),
+              ],
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }
