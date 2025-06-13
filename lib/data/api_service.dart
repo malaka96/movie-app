@@ -53,4 +53,50 @@ class ApiService {
       throw Exception("Failed to load trending movies");
     }
   }
+
+  Future<List<Map<String, String>>> fetchTopRatedMovies() async {
+    final response = await http.get(
+      Uri.parse("https://api.themoviedb.org/3/movie/top_rated?api_key=$apiKey"),
+    );
+
+    if (response.statusCode == 200) {
+      final data = json.decode(response.body);
+      return data['results']
+          .map<Map<String, String>>(
+            (movie) => {
+              "title": movie["title"].toString(),
+              "description": movie["overview"].toString(),
+              "poster": movie["poster_path"] != null
+                  ? "https://image.tmdb.org/t/p/w500${movie['poster_path']}"
+                  : "",
+            },
+          )
+          .toList();
+    } else {
+      throw Exception("Failed to load top rated movies");
+    }
+  }
+
+  Future<List<Map<String, String>>> fetchUpCommingMovies() async {
+    final response = await http.get(
+      Uri.parse("https://api.themoviedb.org/3/movie/upcoming?api_key=$apiKey"),
+    );
+
+    if (response.statusCode == 200) {
+      final data = json.decode(response.body);
+      return data['results']
+          .map<Map<String, String>>(
+            (movie) => {
+              "title": movie["title"].toString(),
+              "description": movie["overview"].toString(),
+              "poster": movie["poster_path"] != null
+                  ? "https://image.tmdb.org/t/p/w500${movie['poster_path']}"
+                  : "",
+            },
+          )
+          .toList();
+    } else {
+      throw Exception("Failed to upcomming movies");
+    }
+  }
 }

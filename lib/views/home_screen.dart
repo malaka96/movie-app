@@ -20,6 +20,8 @@ class HomeScreenState extends State<HomeScreen> {
     movieData = Future.wait([
       ApiService().fetchNowPlayingMovies(),
       ApiService().fetchTrendingMovies(),
+      ApiService().fetchTopRatedMovies(),
+      ApiService().fetchUpCommingMovies(),
     ]);
   }
 
@@ -36,7 +38,37 @@ class HomeScreenState extends State<HomeScreen> {
           final nowPlayingMovies =
               snapshot.data![0] as List<Map<String, String>>;
           final trendingMovies = snapshot.data![1] as List<Map<String, String>>;
-          List<Widget> trandingMoviesWidgets = trendingMovies
+          final topRatedMovies = snapshot.data![2] as List<Map<String, String>>;
+          final upCommingMovies =
+              snapshot.data![3] as List<Map<String, String>>;
+
+          final List<Widget> trandingMoviesWidgets = trendingMovies
+              .map(
+                (movie) => Padding(
+                  padding: const EdgeInsets.all(12.0),
+                  child: MovieImageTextRow(
+                    imageUrl: movie["poster"]!,
+                    title: movie["title"]!,
+                    //description: movie["description"]!,
+                  ),
+                ),
+              )
+              .toList();
+
+          final List<Widget> topRatedMoviesWidgets = topRatedMovies
+              .map(
+                (movie) => Padding(
+                  padding: const EdgeInsets.all(12.0),
+                  child: MovieImageTextRow(
+                    imageUrl: movie["poster"]!,
+                    title: movie["title"]!,
+                    //description: movie["description"]!,
+                  ),
+                ),
+              )
+              .toList();
+
+          final List<Widget> upCommingMoviesWidgets = upCommingMovies
               .map(
                 (movie) => Padding(
                   padding: const EdgeInsets.all(12.0),
@@ -62,9 +94,28 @@ class HomeScreenState extends State<HomeScreen> {
                 delegate: SliverChildListDelegate([
                   Padding(
                     padding: const EdgeInsets.all(12.0),
-                    child: Text('Trending Movies'),
+                    child: Text(
+                      'Trending Movies',
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
                   ),
                   HorizontalWidgetSetScroller(widgets: trandingMoviesWidgets),
+                  Padding(
+                    padding: const EdgeInsets.all(12.0),
+                    child: Text(
+                      'Top Rated Movies',
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                  HorizontalWidgetSetScroller(widgets: topRatedMoviesWidgets),
+                  Padding(
+                    padding: const EdgeInsets.all(12.0),
+                    child: Text(
+                      'Up Comming Movies',
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                   HorizontalWidgetSetScroller(widgets: upCommingMoviesWidgets),
                 ]),
               ),
             ],

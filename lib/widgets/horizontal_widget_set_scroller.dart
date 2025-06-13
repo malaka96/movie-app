@@ -14,7 +14,7 @@ class HorizontalWidgetSetScroller extends StatelessWidget {
     }
 
     return SizedBox(
-      height: MediaQuery.of(context).size.height * 0.6,
+      height: 400,
       child: ListView(
         scrollDirection: Axis.horizontal,
         children: chunkedWidgets.map((group) {
