@@ -99,4 +99,47 @@ class ApiService {
       throw Exception("Failed to upcomming movies");
     }
   }
+
+  Future<Map<String, dynamic>> fetchMovieDetails(String id) async {
+    final response = await http.get(
+      Uri.parse(
+        "https://api.themoviedb.org/3/movie/$id?api_key=$apiKey&append_to_response=credits",
+      ),
+    );
+
+    if (response.statusCode == 200) {
+      final data = json.decode(response.body);
+
+      final actors = (data['credits']['cast'] as List)
+          .take(5)
+          .map(
+            (actor) => {
+              "name": actor['name'].toString(),
+              "character": actor['character'].toString(),
+              "profilePic": actor['profile_path'] != null
+                  ? "https://image.tmdb.org/t/p/w185${actor['profile_path']}"
+                  : "", // fallback if no image
+            },
+          );
+
+      final crew = data['credits']['crew'] as List;
+      final director = crew.firstWhere(
+        (person) => person['job'] == 'Director',
+        orElse: () => {'name': 'Unknown'},
+      )['name'];
+
+      return {
+      "poster": data["poster_path"] != null ? "https://image.tmdb.org/t/p/w500${data['poster_path']}" : "",
+      "title": data["title"],
+      "description": data["overview"],
+      "rating": data["vote_average"].toString(),
+      "genres": data["genres"]?.last["name"],
+      "director": director,
+      "language": data["spoken_languages"].first["name"],
+      "actors": actors,
+    };
+    } else {
+      throw Exception("Failed to load movie details");
+    }
+  }
 }

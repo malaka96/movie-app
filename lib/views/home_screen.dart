@@ -84,8 +84,9 @@ class HomeScreenState extends State<HomeScreen> {
           return CustomScrollView(
             slivers: [
               SliverAppBar(
+                title: const Text('Welcome to Movie App'),
                 expandedHeight: MediaQuery.of(context).size.height,
-                pinned: true,
+                pinned: false,
                 flexibleSpace: FlexibleSpaceBar(
                   background: MovieGallery(movies: nowPlayingMovies),
                 ),
@@ -119,7 +120,7 @@ class HomeScreenState extends State<HomeScreen> {
                 ]),
               ),
             ],
-          );
+          ); 
         }
       },
     );
