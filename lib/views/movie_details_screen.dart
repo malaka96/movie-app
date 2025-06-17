@@ -29,6 +29,11 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
             return const Center(child: Text("Error loading movies"));
           } else {
             final moviePoster = snapshot.data!["poster"];
+            final String title = snapshot.data!["title"];
+            final String genre = snapshot.data!["genres"];
+            final double rating = snapshot.data!["rating"];
+            final String description = snapshot.data!["description"];
+            final actors = snapshot.data!["actors"];
 
             return CustomScrollView(
               slivers: [
@@ -37,21 +42,47 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                   expandedHeight: MediaQuery.of(context).size.height,
                   pinned: false,
                   flexibleSpace: FlexibleSpaceBar(
-                    background: Image.network(
-                      moviePoster,
-                      fit: BoxFit.cover,
-                    ),
+                    background: Image.network(moviePoster, fit: BoxFit.cover),
                   ),
                 ),
                 SliverList(
                   delegate: SliverChildListDelegate([
-                    Text('yello'),
+                    Padding(
+                      padding: const EdgeInsets.all(12.0),
+                      child: Text(title),
+                    ),
                     SizedBox(height: 10),
-                    Text('yello'),
+                    Padding(
+                      padding: const EdgeInsets.all(12.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(genre),
+                          Text('${rating.toStringAsFixed(1)}/10'),
+                        ],
+                      ),
+                    ),
                     SizedBox(height: 10),
-                    Text('yello'),
+                    Padding(
+                      padding: const EdgeInsets.all(12.0),
+                      child: Text(description),
+                    ),
                     SizedBox(height: 10),
-                    Text('yello'),
+                    SizedBox(
+                      height: 250,
+                      child: ListView(
+                        scrollDirection: Axis.horizontal,
+                        children: actors.map((actor) {
+                          return Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              CircleAvatar(
+                                backgroundImage: NetworkImage(actor["profilePic"]),
+                              ),
+                            ],
+                          );
+                        })),
+                      ),
                     SizedBox(height: 10),
                     Text('yello'),
                     SizedBox(height: 10),

@@ -120,7 +120,7 @@ class ApiService {
                   ? "https://image.tmdb.org/t/p/w185${actor['profile_path']}"
                   : "", // fallback if no image
             },
-          );
+          ).toList();
 
       final crew = data['credits']['crew'] as List;
       final director = crew.firstWhere(
@@ -132,7 +132,7 @@ class ApiService {
       "poster": data["poster_path"] != null ? "https://image.tmdb.org/t/p/w500${data['poster_path']}" : "",
       "title": data["title"],
       "description": data["overview"],
-      "rating": data["vote_average"].toString(),
+      "rating": data["vote_average"],
       "genres": data["genres"]?.last["name"],
       "director": director,
       "language": data["spoken_languages"].first["name"],
