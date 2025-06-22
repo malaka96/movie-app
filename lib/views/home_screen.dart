@@ -89,7 +89,7 @@ class HomeScreenState extends State<HomeScreen> {
               SliverAppBar(
                 title: const Text('Welcome to Movie App'),
                 expandedHeight: MediaQuery.of(context).size.height,
-                pinned: false,
+                pinned: true,
                 flexibleSpace: FlexibleSpaceBar(
                   background: MovieGallery(movies: nowPlayingMovies),
                 ),

@@ -3,10 +3,7 @@ import 'package:movie_app/data/api_service.dart';
 
 class MovieDetailsScreen extends StatefulWidget {
   final String id;
-  const MovieDetailsScreen({
-    super.key,
-    required this.id,
-    });
+  const MovieDetailsScreen({super.key, required this.id});
 
   @override
   State<MovieDetailsScreen> createState() => _MovieDetailsScreenState();
@@ -54,24 +51,82 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                   delegate: SliverChildListDelegate([
                     Padding(
                       padding: const EdgeInsets.all(12.0),
-                      child: Text(title),
-                    ),
-                    SizedBox(height: 10),
-                    Padding(
-                      padding: const EdgeInsets.all(12.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(genre),
-                          Text('${rating.toStringAsFixed(1)}/10'),
+                          Chip(
+                            label: Text('Title'),
+                            labelStyle: TextStyle(fontSize: 12),
+                            padding: EdgeInsets.symmetric(
+                              vertical: 5,
+                              horizontal: 10,
+                            ),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8),
+                            child: Text(title),
+                          ),
+                          SizedBox(height: 15),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Chip(
+                                label: Text('Genre'),
+                                labelStyle: TextStyle(fontSize: 12),
+                                padding: EdgeInsets.symmetric(
+                                  vertical: 5,
+                                  horizontal: 10,
+                                ),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(20),
+                                ),
+                              ),
+                              Chip(
+                                label: Text('Rating'),
+                                labelStyle: TextStyle(fontSize: 12),
+                                padding: EdgeInsets.symmetric(
+                                  vertical: 5,
+                                  horizontal: 10,
+                                ),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(20),
+                                ),
+                              ),
+                            ],
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(genre),
+                                Text('${rating.toStringAsFixed(1)}/10'),
+                              ],
+                            ),
+                          ),
+                          SizedBox(height: 15),
+                          Chip(
+                                label: Text('Description'),
+                                labelStyle: TextStyle(fontSize: 12),
+                                padding: EdgeInsets.symmetric(
+                                  vertical: 5,
+                                  horizontal: 10,
+                                ),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(20),
+                                ),
+                              ),
+                          Padding(
+                            padding: const EdgeInsets.all(8),
+                            child: Text(description),
+                          ),
                         ],
                       ),
                     ),
-                    SizedBox(height: 10),
-                    Padding(
-                      padding: const EdgeInsets.all(12.0),
-                      child: Text(description),
-                    ),
+
                     SizedBox(height: 10),
                     Padding(
                       padding: const EdgeInsets.all(12.0),
