@@ -21,6 +21,7 @@ class ApiService {
               "poster": movie["poster_path"] != null
                   ? "https://image.tmdb.org/t/p/w500${movie['poster_path']}"
                   : "",
+              "id": movie["id"].toString(),
             },
           )
           .toList();
@@ -46,6 +47,7 @@ class ApiService {
               "poster": movie["poster_path"] != null
                   ? "https://image.tmdb.org/t/p/w500${movie['poster_path']}"
                   : "",
+              "id": movie["id"].toString(),
             },
           )
           .toList();
@@ -69,6 +71,7 @@ class ApiService {
               "poster": movie["poster_path"] != null
                   ? "https://image.tmdb.org/t/p/w500${movie['poster_path']}"
                   : "",
+              "id": movie["id"].toString(),
             },
           )
           .toList();
@@ -92,6 +95,7 @@ class ApiService {
               "poster": movie["poster_path"] != null
                   ? "https://image.tmdb.org/t/p/w500${movie['poster_path']}"
                   : "",
+              "id": movie["id"].toString(),
             },
           )
           .toList();
@@ -120,7 +124,8 @@ class ApiService {
                   ? "https://image.tmdb.org/t/p/w185${actor['profile_path']}"
                   : "", // fallback if no image
             },
-          ).toList();
+          )
+          .toList();
 
       final crew = data['credits']['crew'] as List;
       final director = crew.firstWhere(
@@ -129,15 +134,17 @@ class ApiService {
       )['name'];
 
       return {
-      "poster": data["poster_path"] != null ? "https://image.tmdb.org/t/p/w500${data['poster_path']}" : "",
-      "title": data["title"],
-      "description": data["overview"],
-      "rating": data["vote_average"],
-      "genres": data["genres"]?.last["name"],
-      "director": director,
-      "language": data["spoken_languages"].first["name"],
-      "actors": actors,
-    };
+        "poster": data["poster_path"] != null
+            ? "https://image.tmdb.org/t/p/w500${data['poster_path']}"
+            : "",
+        "title": data["title"],
+        "description": data["overview"],
+        "rating": data["vote_average"],
+        "genres": data["genres"]?.last["name"],
+        "director": director,
+        "language": data["spoken_languages"].first["name"],
+        "actors": actors,
+      };
     } else {
       throw Exception("Failed to load movie details");
     }

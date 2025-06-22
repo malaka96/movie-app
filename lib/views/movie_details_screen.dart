@@ -2,7 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:movie_app/data/api_service.dart';
 
 class MovieDetailsScreen extends StatefulWidget {
-  const MovieDetailsScreen({super.key});
+  final String id;
+  const MovieDetailsScreen({
+    super.key,
+    required this.id,
+    });
 
   @override
   State<MovieDetailsScreen> createState() => _MovieDetailsScreenState();
@@ -14,7 +18,7 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
   @override
   void initState() {
     super.initState();
-    movieData = ApiService().fetchMovieDetails("1284120");
+    movieData = ApiService().fetchMovieDetails(widget.id);
   }
 
   @override
@@ -33,7 +37,8 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
             final String genre = snapshot.data!["genres"];
             final double rating = snapshot.data!["rating"];
             final String description = snapshot.data!["description"];
-            final actors = snapshot.data!["actors"];
+            final actors =
+                snapshot.data!["actors"] as List<Map<String, String>>;
 
             return CustomScrollView(
               slivers: [
@@ -68,21 +73,43 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                       child: Text(description),
                     ),
                     SizedBox(height: 10),
+                    Padding(
+                      padding: const EdgeInsets.all(12.0),
+                      child: Text('Actors'),
+                    ),
                     SizedBox(
-                      height: 250,
+                      height: 160,
                       child: ListView(
                         scrollDirection: Axis.horizontal,
                         children: actors.map((actor) {
-                          return Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              CircleAvatar(
-                                backgroundImage: NetworkImage(actor["profilePic"]),
-                              ),
-                            ],
+                          return Padding(
+                            padding: const EdgeInsets.all(12),
+                            child: Column(
+                              children: [
+                                CircleAvatar(
+                                  radius: 40,
+                                  backgroundImage: NetworkImage(
+                                    actor["profilePic"]!,
+                                  ),
+                                ),
+                                const SizedBox(height: 6),
+                                Text(
+                                  actor["name"] ?? '',
+                                  style: TextStyle(fontSize: 12),
+                                ),
+                                Text(
+                                  actor["character"] ?? '',
+                                  style: TextStyle(
+                                    fontSize: 11,
+                                    color: Colors.grey,
+                                  ),
+                                ),
+                              ],
+                            ),
                           );
-                        })),
+                        }).toList(),
                       ),
+                    ),
                     SizedBox(height: 10),
                     Text('yello'),
                     SizedBox(height: 10),

@@ -49,6 +49,7 @@ class HomeScreenState extends State<HomeScreen> {
                   child: MovieImageTextRow(
                     imageUrl: movie["poster"]!,
                     title: movie["title"]!,
+                    id:movie["id"]!,
                     //description: movie["description"]!,
                   ),
                 ),
@@ -62,6 +63,7 @@ class HomeScreenState extends State<HomeScreen> {
                   child: MovieImageTextRow(
                     imageUrl: movie["poster"]!,
                     title: movie["title"]!,
+                    id:movie["id"]!,
                     //description: movie["description"]!,
                   ),
                 ),
@@ -75,6 +77,7 @@ class HomeScreenState extends State<HomeScreen> {
                   child: MovieImageTextRow(
                     imageUrl: movie["poster"]!,
                     title: movie["title"]!,
+                    id:movie["id"]!,
                     //description: movie["description"]!,
                   ),
                 ),
