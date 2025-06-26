@@ -29,13 +29,15 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
           } else if (snapshot.hasError) {
             return const Center(child: Text("Error loading movies"));
           } else {
-            final moviePoster = snapshot.data!["poster"];
-            final String title = snapshot.data!["title"];
-            final String genre = snapshot.data!["genres"];
-            final double rating = snapshot.data!["rating"];
-            final String description = snapshot.data!["description"];
-            final actors =
-                snapshot.data!["actors"] as List<Map<String, String>>;
+            final data = snapshot.data as Map<String, dynamic>;
+            final String moviePoster = data["poster"] ?? '';
+            final String title = data["title"] ?? 'Untitled';
+            final String genre = data["genres"] ?? 'Unknown';
+            final double rating = (data["rating"] ?? 0).toDouble();
+            final String description = data["description"] ?? '';
+            final String releaseDate = data["date"] ?? 'Unknown';
+            final List<Map<String, String>> actors =
+                List<Map<String, String>>.from(data["actors"] ?? []);
 
             return CustomScrollView(
               slivers: [
@@ -44,7 +46,18 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                   expandedHeight: MediaQuery.of(context).size.height,
                   pinned: false,
                   flexibleSpace: FlexibleSpaceBar(
-                    background: Image.network(moviePoster, fit: BoxFit.cover),
+                    background: (moviePoster.isNotEmpty)
+                        ? Image.network(moviePoster, fit: BoxFit.cover)
+                        : Container(
+                            color: Colors.grey[800],
+                            child: const Center(
+                              child: Icon(
+                                Icons.image_not_supported,
+                                size: 60,
+                                color: Colors.white70,
+                              ),
+                            ),
+                          ),
                   ),
                 ),
                 SliverList(
@@ -109,19 +122,35 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                           ),
                           SizedBox(height: 15),
                           Chip(
-                                label: Text('Description'),
-                                labelStyle: TextStyle(fontSize: 12),
-                                padding: EdgeInsets.symmetric(
-                                  vertical: 5,
-                                  horizontal: 10,
-                                ),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(20),
-                                ),
-                              ),
+                            label: Text('Description'),
+                            labelStyle: TextStyle(fontSize: 12),
+                            padding: EdgeInsets.symmetric(
+                              vertical: 5,
+                              horizontal: 10,
+                            ),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                          ),
                           Padding(
                             padding: const EdgeInsets.all(8),
                             child: Text(description),
+                          ),
+                          SizedBox(height: 15),
+                          Chip(
+                            label: Text('Release Date'),
+                            labelStyle: TextStyle(fontSize: 12),
+                            padding: EdgeInsets.symmetric(
+                              vertical: 5,
+                              horizontal: 10,
+                            ),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8),
+                            child: Text(releaseDate),
                           ),
                         ],
                       ),

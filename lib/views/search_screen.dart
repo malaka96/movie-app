@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:movie_app/data/api_service.dart';
+import 'package:movie_app/widgets/movie_image_text_row.dart';
 
 class SearchScreen extends StatefulWidget {
   const SearchScreen({super.key});
@@ -9,10 +11,10 @@ class SearchScreen extends StatefulWidget {
 
 class _SearchScreenState extends State<SearchScreen> {
   final TextEditingController _controller = TextEditingController();
-
   final FocusNode _focusNode = FocusNode();
-
   bool _isFocused = false;
+
+  List<Map<String, String>> searchResults = [];
 
   @override
   void initState() {
@@ -35,12 +37,34 @@ class _SearchScreenState extends State<SearchScreen> {
     setState(() {
       _controller.clear();
       _focusNode.unfocus();
-      //_searchResults = [];
+      searchResults = [];
+    });
+  }
+
+  void performSearch(String query) async {
+    final results =
+        await ApiService().searchMovies(query);
+    setState(() {
+      searchResults = results; // You’ll map and display these
     });
   }
 
   @override
   Widget build(BuildContext context) {
+    final List<Widget> searchMoviesWidgets = searchResults
+        .map(
+          (movie) => Padding(
+            padding: const EdgeInsets.all(12.0),
+            child: MovieImageTextRow(
+              imageUrl: movie["poster"]!,
+              title: movie["title"]!,
+              id: movie["id"]!,
+              //description: movie["description"]!,
+            ),
+          ),
+        )
+        .toList();
+
     return SafeArea(
       child: Padding(
         padding: EdgeInsets.all(12),
@@ -48,8 +72,8 @@ class _SearchScreenState extends State<SearchScreen> {
           //mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('Search',style: TextStyle(fontSize: 20),),
-            SizedBox(height: 10,),
+            Text('Search', style: TextStyle(fontSize: 20)),
+            SizedBox(height: 10),
             Row(
               children: [
                 Expanded(
@@ -57,6 +81,7 @@ class _SearchScreenState extends State<SearchScreen> {
                     controller: _controller,
                     focusNode: _focusNode,
                     style: TextStyle(color: Colors.white),
+                    onSubmitted: (value) => performSearch(value),
                     decoration: InputDecoration(
                       hintText: 'Shows, Movies and More',
                       suffixIcon: _isFocused
@@ -78,6 +103,15 @@ class _SearchScreenState extends State<SearchScreen> {
                   ),
                 ),
               ],
+            ),
+            SizedBox(height: 10),
+            Expanded(
+              child: ListView(
+                children: 
+                  searchMoviesWidgets.map((widget){
+                    return widget;
+                  } ).toList(),
+              ),
             ),
           ],
         ),
