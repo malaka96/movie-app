@@ -137,6 +137,7 @@ class ApiService {
         "poster": data["poster_path"] != null
             ? "https://image.tmdb.org/t/p/w500${data['poster_path']}"
             : "",
+        "id": data["id"],
         "title": data["title"],
         "description": data["overview"],
         "rating": data["vote_average"],
@@ -172,7 +173,6 @@ class ApiService {
             },
           )
           .toList();
-
     } else {
       throw Exception("Failed to search movies");
     }

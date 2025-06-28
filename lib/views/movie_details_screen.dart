@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:movie_app/data/api_service.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class MovieDetailsScreen extends StatefulWidget {
   final String id;
@@ -11,11 +12,35 @@ class MovieDetailsScreen extends StatefulWidget {
 
 class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
   late Future<Map<String, dynamic>> movieData;
+  bool isFavorite = false;
 
   @override
   void initState() {
     super.initState();
     movieData = ApiService().fetchMovieDetails(widget.id);
+    checkIfFavorite(widget.id);
+  }
+
+  Future<void> toggleFavorite(String movieId) async {
+    final prefs = await SharedPreferences.getInstance();
+    final favorites = prefs.getStringList('favorite_movies') ?? [];
+    if (favorites.contains(movieId)) {
+      favorites.remove(movieId);
+      isFavorite = false;
+    } else {
+      favorites.add(movieId);
+      isFavorite = true;
+    }
+    await prefs.setStringList('favorite_movies', favorites);
+    setState(() {});
+  }
+
+  Future<void> checkIfFavorite(String movieId) async {
+    final prefs = await SharedPreferences.getInstance();
+    final favorites = prefs.getStringList('favorite_movies') ?? [];
+    setState(() {
+      isFavorite = favorites.contains(movieId);
+    });
   }
 
   @override
@@ -27,7 +52,7 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
           } else if (snapshot.hasError) {
-            return const Center(child: Text("Error loading movies"));
+            return Center(child: Text("Error: ${widget.id}"));
           } else {
             final data = snapshot.data as Map<String, dynamic>;
             final String moviePoster = data["poster"] ?? '';
@@ -67,16 +92,30 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Chip(
-                            label: Text('Title'),
-                            labelStyle: TextStyle(fontSize: 12),
-                            padding: EdgeInsets.symmetric(
-                              vertical: 5,
-                              horizontal: 10,
-                            ),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(20),
-                            ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Chip(
+                                label: Text('Title'),
+                                labelStyle: TextStyle(fontSize: 12),
+                                padding: EdgeInsets.symmetric(
+                                  vertical: 5,
+                                  horizontal: 10,
+                                ),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(20),
+                                ),
+                              ),
+                              IconButton(
+                                onPressed: () => toggleFavorite(widget.id),
+                                icon: Icon(
+                                  Icons.favorite,
+                                  color: !isFavorite
+                                      ? const Color.fromARGB(255, 180, 180, 180)
+                                      : Colors.red,
+                                ),
+                              ),
+                            ],
                           ),
                           Padding(
                             padding: const EdgeInsets.all(8),
@@ -194,13 +233,6 @@ class _MovieDetailsScreenState extends State<MovieDetailsScreen> {
                         }).toList(),
                       ),
                     ),
-                    SizedBox(height: 10),
-                    Text('yello'),
-                    SizedBox(height: 10),
-                    Text('yello'),
-                    SizedBox(height: 10),
-                    Text('yello'),
-                    SizedBox(height: 10),
                   ]),
                 ),
               ],

@@ -33,6 +33,8 @@ dependencies:
   http: ^1.4.0
   carousel_slider: ^5.0.0
   cached_network_image: ^3.4.1
+  shared_preferences: ^2.5.3
+  google_fonts: ^6.2.1
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -41,6 +43,8 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  flutter_launcher_icons: ^0.13.1
+
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
@@ -51,6 +55,10 @@ dev_dependencies:
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
+
+flutter_icons:
+  android: true
+  image_path: "assets/images/movie_app_icon-removebg.png"
 
 # The following section is specific to Flutter packages.
 flutter:

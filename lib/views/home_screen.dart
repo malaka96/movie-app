@@ -25,6 +25,11 @@ class HomeScreenState extends State<HomeScreen> {
     ]);
   }
 
+  Widget sectionTitle(String text) => Padding(
+    padding: const EdgeInsets.all(12.0),
+    child: Text(text, style: const TextStyle(fontWeight: FontWeight.bold)),
+  );
+
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<dynamic>>(
@@ -49,7 +54,7 @@ class HomeScreenState extends State<HomeScreen> {
                   child: MovieImageTextRow(
                     imageUrl: movie["poster"]!,
                     title: movie["title"]!,
-                    id:movie["id"]!,
+                    id: movie["id"]!,
                     //description: movie["description"]!,
                   ),
                 ),
@@ -63,7 +68,7 @@ class HomeScreenState extends State<HomeScreen> {
                   child: MovieImageTextRow(
                     imageUrl: movie["poster"]!,
                     title: movie["title"]!,
-                    id:movie["id"]!,
+                    id: movie["id"]!,
                     //description: movie["description"]!,
                   ),
                 ),
@@ -77,7 +82,7 @@ class HomeScreenState extends State<HomeScreen> {
                   child: MovieImageTextRow(
                     imageUrl: movie["poster"]!,
                     title: movie["title"]!,
-                    id:movie["id"]!,
+                    id: movie["id"]!,
                     //description: movie["description"]!,
                   ),
                 ),
@@ -96,34 +101,16 @@ class HomeScreenState extends State<HomeScreen> {
               ),
               SliverList(
                 delegate: SliverChildListDelegate([
-                  Padding(
-                    padding: const EdgeInsets.all(12.0),
-                    child: Text(
-                      'Trending Movies',
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                  ),
+                  sectionTitle('Trending Movies'),
                   HorizontalWidgetSetScroller(widgets: trandingMoviesWidgets),
-                  Padding(
-                    padding: const EdgeInsets.all(12.0),
-                    child: Text(
-                      'Top Rated Movies',
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                  ),
+                  sectionTitle('Top Rated Movies'),
                   HorizontalWidgetSetScroller(widgets: topRatedMoviesWidgets),
-                  Padding(
-                    padding: const EdgeInsets.all(12.0),
-                    child: Text(
-                      'Up Comming Movies',
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                   HorizontalWidgetSetScroller(widgets: upCommingMoviesWidgets),
+                  sectionTitle('Up Comming Movies'),
+                  HorizontalWidgetSetScroller(widgets: upCommingMoviesWidgets),
                 ]),
               ),
             ],
-          ); 
+          );
         }
       },
     );
